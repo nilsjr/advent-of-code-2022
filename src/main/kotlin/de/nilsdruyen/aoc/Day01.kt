@@ -1,3 +1,5 @@
+package de.nilsdruyen.aoc
+
 fun main() {
     fun part1(input: List<String>): Int {
         return input.size
