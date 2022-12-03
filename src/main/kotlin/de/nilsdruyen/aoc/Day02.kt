@@ -29,7 +29,7 @@ fun main() {
     println(part2(input))
 }
 
-fun Char.predictedEnd(opponent: Char): Char {
+private fun Char.predictedEnd(opponent: Char): Char {
     return when {
         this == 'X' -> when (opponent) {
             'A' -> 'Z'
@@ -57,7 +57,7 @@ fun Char.predictedEnd(opponent: Char): Char {
 }
 
 
-fun Char.score(): Int = when (this) {
+private fun Char.score(): Int = when (this) {
     'A' -> 1
     'B' -> 2
     'C' -> 3
@@ -68,7 +68,7 @@ fun Char.score(): Int = when (this) {
 }
 
 // won 6, draw 3, loss 0
-fun getScore(result: Int, choosed: Char): Int {
+private fun getScore(result: Int, choosed: Char): Int {
     val score = when (result) {
         1 -> 6
         0 -> 3
@@ -79,7 +79,7 @@ fun getScore(result: Int, choosed: Char): Int {
 }
 
 // A X rock, B Y paper, C Z scissors
-fun Char.fight(other: Char): Int {
+private fun Char.fight(other: Char): Int {
     return when {
         this == 'B' && other == 'Z' -> 1
         this == 'C' && other == 'X' -> 1
