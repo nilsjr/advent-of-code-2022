@@ -2,18 +2,14 @@ package de.nilsdruyen.aoc
 
 fun main() {
 
-    fun part1(input: List<String>): Int {
-        return input.toPairRanges().map { ranges ->
-            val firstInSecond = ranges.first.all { it in ranges.second }
-            val secondInFirst = ranges.second.all { it in ranges.first }
-            firstInSecond || secondInFirst
-        }.count { it }
+    fun part1(input: List<String>): Int = input.toPairRanges().count { ranges ->
+        val firstInSecond = ranges.first.all { it in ranges.second }
+        val secondInFirst = ranges.second.all { it in ranges.first }
+        firstInSecond || secondInFirst
     }
 
-    fun part2(input: List<String>): Int {
-        return input.toPairRanges().map { ranges ->
-            ranges.first.any { it in ranges.second }
-        }.count { it }
+    fun part2(input: List<String>): Int = input.toPairRanges().count { ranges ->
+        ranges.first.any { it in ranges.second }
     }
 
     // test if implementation meets criteria from the description, like:
