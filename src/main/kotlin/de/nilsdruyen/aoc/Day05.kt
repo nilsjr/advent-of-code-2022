@@ -5,37 +5,30 @@ data class Instruction(val move: Int, val from: Int, val to: Int)
 fun main() {
 
     fun part1(input: List<String>): String {
-        val crates = input.crates()
-        val stacks = crates.stacks()
-        val instructions = input.instructions(crates.size + 1)
-
-        instructions.forEach { i ->
-            val movedCrates = stacks[i.from - 1].takeLast(i.move).reversed()
-            val changedStack = stacks[i.from - 1].dropLast(i.move)
-            stacks[i.from - 1] = changedStack
-            stacks[i.to - 1] += movedCrates
+        return with(input.crates()) {
+            input.instructions(size).fold(stacks()) { s, i ->
+                val movedCrates = s[i.from - 1].takeLast(i.move).reversed()
+                s[i.from - 1] = s[i.from - 1].dropLast(i.move)
+                s[i.to - 1] += movedCrates
+                s
+            }.topChars()
         }
-
-        return stacks.topChars()
     }
 
     fun part2(input: List<String>): String {
-        val crates = input.crates()
-        val stacks = crates.stacks()
-        val instructions = input.instructions(crates.size + 1)
-
-        instructions.forEach { i ->
-            val movedCrates = stacks[i.from - 1].takeLast(i.move)
-            val changedStack = stacks[i.from - 1].dropLast(i.move)
-            stacks[i.from - 1] = changedStack
-            stacks[i.to - 1] += movedCrates
+        return with(input.crates()) {
+            input.instructions(size).fold(stacks()) { s, i ->
+                val movedCrates = s[i.from - 1].takeLast(i.move)
+                s[i.from - 1] = s[i.from - 1].dropLast(i.move)
+                s[i.to - 1] += movedCrates
+                s
+            }.topChars()
         }
-
-        return stacks.topChars()
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day05_test")
+    check(part1(testInput) == "CMZ")
     check(part2(testInput) == "MCD")
 
     val input = readInput("Day05")
@@ -47,7 +40,7 @@ private fun List<List<Char>>.topChars() = map { it.last() }.joinToString("")
 
 private fun List<String>.crates() = takeWhile { it.isNotBlank() }
 
-private fun List<String>.instructions(dropLines: Int): List<Instruction> = drop(dropLines).map {
+private fun List<String>.instructions(dropLines: Int): List<Instruction> = drop(dropLines + 1).map {
     val parts = it.split(" ")
     val move = parts[1].toInt()
     val from = parts[3].toInt()
@@ -58,10 +51,7 @@ private fun List<String>.instructions(dropLines: Int): List<Instruction> = drop(
 private fun List<String>.stacks(): MutableList<List<Char>> {
     return asSequence()
         .map { it.windowed(3, 4) }
-        .map { row ->
-            row.mapIndexed { index, s -> index to s[1] }
-        }
-        .flatten()
+        .flatMap { row -> row.mapIndexed { index, s -> index to s[1] } }
         .filter { it.second.isLetter() }
         .groupBy { it.first }
         .toSortedMap()
