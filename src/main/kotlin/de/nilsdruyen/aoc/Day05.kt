@@ -1,7 +1,5 @@
 package de.nilsdruyen.aoc
 
-data class Instruction(val move: Int, val from: Int, val to: Int)
-
 fun main() {
 
     fun part1(input: List<String>): String {
@@ -35,6 +33,8 @@ fun main() {
     println(part1(input))
     println(part2(input))
 }
+
+data class Instruction(val move: Int, val from: Int, val to: Int)
 
 private fun List<List<Char>>.topChars() = map { it.last() }.joinToString("")
 
